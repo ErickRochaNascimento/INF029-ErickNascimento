@@ -147,11 +147,22 @@ int q1(char data[])
     4 -> datainicial > datafinal
     Caso o cálculo esteja correto, os atributos qtdDias, qtdMeses e qtdAnos devem ser preenchidos com os valores correspondentes.
  */
+int inverterData(DataQuebrada data)
+{
+    int dtinvertida = 0;
+    dtinvertida = (data.iAno * 10000) + (data.iMes * 100) + data.iDia;
+
+    return dtinvertida;
+}
+
 DiasMesesAnos q2(char datainicial[], char datafinal[])
 {
 
     // calcule os dados e armazene nas três variáveis a seguir
     DiasMesesAnos dma;
+    dma.qtdAnos = 0;
+    dma.qtdMeses = 0;
+    dma.qtdMeses = 0;
 
     if (q1(datainicial) == 0)
     {
@@ -166,8 +177,63 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     else
     {
         // verifique se a data final não é menor que a data inicial
+        DataQuebrada datafinalQuebrada = quebraData(datafinal);
+        int datafinalInvertida = inverterData(datafinalQuebrada);
+        DataQuebrada datainicialQuebrada = quebraData(datainicial);
+        int datainicialInvertida = inverterData(datainicialQuebrada);
 
+        if (datainicialInvertida > datafinalInvertida)
+        {
+            dma.retorno = 4;
+            return dma;
+        }
         // calcule a distancia entre as datas
+        int diasPorMes[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+        if (datainicialQuebrada.iDia <= datafinalQuebrada.iDia)
+        {
+            dma.qtdDias = datafinalQuebrada.iDia - datainicialQuebrada.iDia;
+        }
+        else
+        {
+            int mesAnterior = datafinalQuebrada.iMes - 1;
+
+            if (mesAnterior == 0)
+            {
+                mesAnterior = 12;
+                datafinalQuebrada.iAno = datafinalQuebrada.iAno - 1;
+            }
+
+            int diasEmprestados = diasPorMes[mesAnterior - 1];
+            if (mesAnterior == 2)
+            {
+
+                int bissexto = (datafinalQuebrada.iAno % 4 == 0 && (datafinalQuebrada.iAno % 100 != 0 || datafinalQuebrada.iAno % 400 == 0));
+                if (bissexto)
+                {
+                    diasEmprestados = 29;
+                }
+            }
+
+            datafinalQuebrada.iDia = datafinalQuebrada.iDia + diasEmprestados;
+            datafinalQuebrada.iMes = mesAnterior;
+
+            dma.qtdDias = datafinalQuebrada.iDia - datainicialQuebrada.iDia;
+        }
+
+        if (datainicialQuebrada.iMes <= datafinalQuebrada.iMes)
+        {
+            dma.qtdMeses = datafinalQuebrada.iMes - datainicialQuebrada.iMes;
+        }
+        else
+        {
+            datafinalQuebrada.iAno = datafinalQuebrada.iAno - 1;
+            datafinalQuebrada.iMes = datafinalQuebrada.iMes + 12;
+
+            dma.qtdMeses = datafinalQuebrada.iMes - datainicialQuebrada.iMes;
+        }
+
+        dma.qtdAnos = datafinalQuebrada.iAno - datainicialQuebrada.iAno;
 
         // se tudo der certo
         dma.retorno = 1;
@@ -228,10 +294,11 @@ int q5(int num)
 {
     int numInvertido = 0;
     int auxiliar = 0;
-    for(int i = 0; num != 0; i++){
+    for (int i = 0; num != 0; i++)
+    {
         auxiliar = num % 10;
         num = num / 10;
-        numInvertido = (numInvertido * 10 )+ auxiliar;
+        numInvertido = (numInvertido * 10) + auxiliar;
     }
     return numInvertido;
 }
