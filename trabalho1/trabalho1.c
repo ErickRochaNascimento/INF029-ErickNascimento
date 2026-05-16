@@ -251,10 +251,26 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
  @saida
     Um número n >= 0.
  */
+
+
 int q3(char *texto, char c, int isCaseSensitive)
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
 
+   while(*texto != '\0'){
+    if(isCaseSensitive == 1){
+        if(*texto == c){
+            qtdOcorrencias++;
+        }
+    }else{
+        if (*texto == c || *texto == c + 32 || *texto == c - 32)
+        {
+            qtdOcorrencias++;
+        }
+        
+    }
+    texto++;
+   }
     return qtdOcorrencias;
 }
 
