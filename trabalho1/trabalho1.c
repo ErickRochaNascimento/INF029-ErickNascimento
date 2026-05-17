@@ -374,7 +374,27 @@ int q5(int num)
 
 int q6(int numerobase, int numerobusca)
 {
-    int qtdOcorrencias;
+    int qtdOcorrencias = 0;
+    int auxiliar = 0;
+
+    int multiplicador = 1;
+    int tempBusca = numerobusca;
+
+    while (tempBusca != 0){
+        multiplicador = multiplicador * 10;
+        tempBusca = tempBusca / 10;
+    }
+
+    while (numerobase != 0)
+    {
+        auxiliar = numerobase % multiplicador;
+        if (auxiliar == numerobusca)
+        {
+            qtdOcorrencias++;
+        }
+        numerobase = numerobase / 10;
+    }
+
     return qtdOcorrencias;
 }
 
