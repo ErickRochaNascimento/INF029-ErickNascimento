@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include "trabalho1.h"
 #include <stdlib.h>
+#include <string.h>
 
 DataQuebrada quebraData(char data[]);
 
@@ -252,25 +253,28 @@ DiasMesesAnos q2(char datainicial[], char datafinal[])
     Um número n >= 0.
  */
 
-
 int q3(char *texto, char c, int isCaseSensitive)
 {
     int qtdOcorrencias = 0;
 
-   while(*texto != '\0'){
-    if(isCaseSensitive == 1){
-        if(*texto == c){
-            qtdOcorrencias++;
-        }
-    }else{
-        if (*texto == c || *texto == c + 32 || *texto == c - 32)
+    while (*texto != '\0')
+    {
+        if (isCaseSensitive == 1)
         {
-            qtdOcorrencias++;
+            if (*texto == c)
+            {
+                qtdOcorrencias++;
+            }
         }
-        
+        else
+        {
+            if (*texto == c || *texto == c + 32 || *texto == c - 32)
+            {
+                qtdOcorrencias++;
+            }
+        }
+        texto++;
     }
-    texto++;
-   }
     return qtdOcorrencias;
 }
 
@@ -291,7 +295,46 @@ int q3(char *texto, char c, int isCaseSensitive)
  */
 int q4(char *strTexto, char *strBusca, int posicoes[30])
 {
-    int qtdOcorrencias = -1;
+    int qtdOcorrencias = 0;
+    int posicao = 0;
+    int tamanhoBusca = strlen(strBusca);
+    int tamanhoBuscaChar = 0;
+
+    for (int i = 0; strBusca[i] != '\0'; i++)
+    {
+        if ((strBusca[i] & 0xC0) != 0x80)
+        {
+            tamanhoBuscaChar++;
+        }
+    }
+
+    int posChar = 0;
+
+    for (int i = 0; strTexto[i] != '\0'; i++)
+    {
+        if ((strTexto[i] & 0xC0) != 0x80)
+            posChar++;
+
+        int contador = 0;
+        for (int j = 0; strBusca[j] != '\0'; j++)
+        {
+            if (strTexto[i + j] == strBusca[j])
+            {
+                contador++;
+            }
+            else
+                break;
+        }
+
+        if (contador == tamanhoBusca)
+        {
+            posicoes[posicao] = posChar;
+            posicao++;
+            posicoes[posicao] = posChar + tamanhoBuscaChar - 1;
+            posicao++;
+            qtdOcorrencias++;
+        }
+    }
 
     return qtdOcorrencias;
 }
