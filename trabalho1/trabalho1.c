@@ -380,7 +380,8 @@ int q6(int numerobase, int numerobusca)
     int multiplicador = 1;
     int tempBusca = numerobusca;
 
-    while (tempBusca != 0){
+    while (tempBusca != 0)
+    {
         multiplicador = multiplicador * 10;
         tempBusca = tempBusca / 10;
     }
@@ -408,11 +409,104 @@ int q6(int numerobase, int numerobusca)
     1 se achou 0 se não achou
  */
 
-int q7(char matriz[8][10], char palavra[5])
+ int q7(char matriz[8][10], char palavra[5])
 {
-    int achou;
+    int achou = 0; 
+    int tamanho = strlen(palavra);
+
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            if (matriz[i][j] == palavra[0])
+            {
+              
+                int dirDir = 1; 
+                for (int k = 0; k < tamanho; k++) {
+                    if ((j + k) >= 10 || matriz[i][j + k] != palavra[k]) {
+                        dirDir = 0; 
+                        break;
+                    }
+                }
+                if (dirDir == 1) achou = 1;
+
+
+                int dirEsq = 1;
+                for (int k = 0; k < tamanho; k++) {
+                    if ((j - k) < 0 || matriz[i][j - k] != palavra[k]) {
+                        dirEsq = 0;
+                        break;
+                    }
+                }
+                if (dirEsq == 1) achou = 1;
+
+
+                int dirBaixo = 1;
+                for (int k = 0; k < tamanho; k++) {
+                    if ((i + k) >= 8 || matriz[i + k][j] != palavra[k]) {
+                        dirBaixo = 0;
+                        break;
+                    }
+                }
+                if (dirBaixo == 1) achou = 1;
+
+
+                int dirCima = 1;
+                for (int k = 0; k < tamanho; k++) {
+                    if ((i - k) < 0 || matriz[i - k][j] != palavra[k]) {
+                        dirCima = 0;
+                        break;
+                    }
+                }
+                if (dirCima == 1) achou = 1;
+
+                int diagBaixoDir = 1;
+                for (int k = 0; k < tamanho; k++) {
+                    if ((i + k) >= 8 || (j + k) >= 10 || matriz[i + k][j + k] != palavra[k]) {
+                        diagBaixoDir = 0;
+                        break;
+                    }
+                }
+                if (diagBaixoDir == 1) achou = 1;
+
+                int diagBaixoEsq = 1;
+                for (int k = 0; k < tamanho; k++) {
+                    if ((i + k) >= 8 || (j - k) < 0 || matriz[i + k][j - k] != palavra[k]) {
+                        diagBaixoEsq = 0;
+                        break;
+                    }
+                }
+                if (diagBaixoEsq == 1) achou = 1;
+
+
+     
+                int diagCimaDir = 1;
+                for (int k = 0; k < tamanho; k++) {
+                    if ((i - k) < 0 || (j + k) >= 10 || matriz[i - k][j + k] != palavra[k]) {
+                        diagCimaDir = 0;
+                        break;
+                    }
+                }
+                if (diagCimaDir == 1) achou = 1;
+
+
+         
+                int diagCimaEsq = 1;
+                for (int k = 0; k < tamanho; k++) {
+                    if ((i - k) < 0 || (j - k) < 0 || matriz[i - k][j - k] != palavra[k]) {
+                        diagCimaEsq = 0;
+                        break;
+                    }
+                }
+                if (diagCimaEsq == 1) achou = 1;
+
+            }
+        }
+    }
+
     return achou;
 }
+
 
 DataQuebrada quebraData(char data[])
 {
